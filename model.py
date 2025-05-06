@@ -16,6 +16,13 @@ class Model:
         self.player_bet = 0
         self.player_bankroll = 500
 
+    def __repr__(self):
+        return (
+            f"Player Hand: {self.player_hand}\nDealer Hand:"
+            f" {self.dealer_hand}\nPlayer's Bet: {self.player_bet}\nPlayer's"
+            f" Bankroll: {self.player_bankroll}"
+        )
+
     def set_bet(self, bet):
         self.player_bet = bet
 
@@ -71,6 +78,27 @@ class Model:
         if scores[1] > 21:
             return scores[0]
         return scores[1]
+
+    def dealer_deal(self, deck_list, deck, num, dealer_hand):
+        """
+        Plays the game from the dealers side
+        """
+        while (
+            self.check_score(deck, dealer_hand)[0] <= 16
+            and self.check_score(deck, dealer_hand)[1] <= 16
+        ):
+            dealer_hand.append(deck_list[num])
+            num += 1
+            if self.check_score(deck, dealer_hand)[0] == 21:
+                print("The dealer has 21!")
+                return 21
+            if self.check_score(deck, dealer_hand)[1] == 21:
+                print("The dealer has 21!")
+                return 21
+            if self.check_score(deck, dealer_hand)[1] >= 17:
+                return self.check_score(deck, dealer_hand)[1]
+            if self.check_score(deck, dealer_hand)[0] >= 21:
+                return self.check_score(deck, dealer_hand)[0]
 
     def checks(self, player_hand, dealer_hand, deck):
         """
